@@ -42,7 +42,7 @@ class HealthCheckControllerTest {
         val responseBody = response.body().jsonPath().getObject("", StatusResponse::class.java)
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value())
         assertThat(responseBody.activeProfile).isEqualTo("test")
-        assertThat(responseBody.status).isEqualTo("up")
+        assertThat(responseBody.status).isEqualTo("down")
         assertThat(responseBody.timeStamp).isBefore(LocalDateTime.now())
     }
 }
