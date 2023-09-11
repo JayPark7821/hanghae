@@ -10,8 +10,6 @@ name: Jay's HangHae Journey Alpha CI
 on:
   pull_request:
     branches: develop
-    paths-ignore:
-      - 'README.md'
     
 jobs:
   build:
