@@ -18,7 +18,7 @@ import java.time.LocalDateTime
 @RestController
 class HealthCheckController {
 
-    @Value("\${spring.profiles.active}")
+    @Value("\${jays.hanghae.journey.profile}")
     private lateinit var activeProfile: String
 
     @GetMapping
