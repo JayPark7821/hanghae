@@ -1,3 +1,4 @@
-spring:
-    profiles:
-        active: alpha
+jays:
+    hanghae:
+        journey:
+            profile: local
