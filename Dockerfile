@@ -1,3 +1,5 @@
 FROM openjdk:17-ea-11-jdk-slim
-COPY build/libs/*.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+ARG JAR_FILE
+COPY ${JAR_FILE} app.jar
+ARG PROFILE
+ENTRYPOINT ["java","-jar", "-Dspring.profiles.active=${PROFILE}", "/app.jar"]

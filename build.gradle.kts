@@ -4,13 +4,15 @@ plugins {
     id("org.springframework.boot") version "3.1.3"
     id("io.spring.dependency-management") version "1.1.3"
     id("org.jlleitschuh.gradle.ktlint") version "11.4.0"
+    id("com.palantir.docker") version "0.35.0"
 
+    kotlin("plugin.jpa") version "1.8.22"
     kotlin("jvm") version "1.8.22"
     kotlin("plugin.spring") version "1.8.22"
 }
 
 group = "kr.jay"
-version = "0.0.1-SNAPSHOT"
+version = "1.0.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -41,4 +43,16 @@ tasks.withType<Test> {
 
 tasks.named<Jar>("jar") {
     enabled = false
+}
+
+docker {
+    name = project.name + ":" + version
+    setDockerfile(file("Dockerfile"))
+    files(tasks.bootJar.get().outputs.files)
+    buildArgs(
+        mapOf(
+            "JAR_FILE" to tasks.bootJar.get().outputs.files.singleFile.name,
+            "PROFILE" to "alpha"
+        )
+    )
 }
