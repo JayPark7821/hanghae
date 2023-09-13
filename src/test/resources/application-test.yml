@@ -2,3 +2,12 @@ jays:
   hanghae:
     journey:
         profile: test
+spring:
+  datasource:
+        url: jdbc:h2:mem:testdb
+        username: sa
+        password:
+        driver-class-name: org.h2.Driver
+  jpa:
+      hibernate:
+          ddl-auto: update
