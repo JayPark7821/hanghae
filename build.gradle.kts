@@ -28,6 +28,10 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.rest-assured:rest-assured")
+
+    runtimeOnly("com.mysql:mysql-connector-j")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
 }
 
 tasks.withType<KotlinCompile> {
@@ -51,8 +55,7 @@ docker {
     files(tasks.bootJar.get().outputs.files)
     buildArgs(
         mapOf(
-            "JAR_FILE" to tasks.bootJar.get().outputs.files.singleFile.name,
-            "PROFILE" to "alpha"
+            "JAR_FILE" to tasks.bootJar.get().outputs.files.singleFile.name
         )
     )
 }

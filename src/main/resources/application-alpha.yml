@@ -2,3 +2,12 @@ jays:
     hanghae:
         journey:
             profile: alpha
+
+spring:
+    datasource:
+        url: ${ALPHA_DB_URL}
+        username: ${ALPHA_DB_USERNAME}
+        password: ${ALPHA_DB_PASSWORD}
+    jpa:
+        hibernate:
+            ddl-auto: update

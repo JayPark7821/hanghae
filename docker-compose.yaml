@@ -25,7 +25,7 @@ services:
     depends_on:
       - mysql
     environment:
-        - PROFILE=alpha
+        - ACTIVE_PROFILE=default
 
 networks:
     jays_hanghae_network:
