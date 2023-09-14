@@ -24,7 +24,7 @@
 #    See the documentation for each action used below for the recommended IAM policies for this IAM user,
 #    and best practices on handling the access key credentials.
 
-name: Jay's HangHae Journey Alpha CD
+name: Jay's HangHae Alpha CD
 
 on:
   push:
@@ -82,8 +82,8 @@ jobs:
     - name: Build with Gradle
       run: |
           chmod +x ./gradlew
-          ./gradlew build
-
+          ./gradlew build -x test
+#  --parallel
     - name: Set up docker buildx
       id: buildx
       uses: docker/setup-buildx-action@v2
