@@ -24,21 +24,21 @@
 #    See the documentation for each action used below for the recommended IAM policies for this IAM user,
 #    and best practices on handling the access key credentials.
 
-name: Jay's HangHae Alpha CD
+name: Jay's HangHae Prod CD
 
 on:
   push:
     branches:
-      - develop
+      - main
 
 env:
   AWS_REGION: ap-northeast-2                   # set this to your preferred AWS region, e.g. us-west-1
   ECR_REPOSITORY: jays-hanghae           # set this to your Amazon ECR repository name
-  ECS_SERVICE: jays-hanghae-service-deploy              # set this to your Amazon ECS service name
-  ECS_CLUSTER: jays-hanghae-cluster                 # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: jays-hanghae-task # set this to the path to your Amazon ECS task definition
+  ECS_SERVICE: jays-hanghae-prod-service-deploy              # set this to your Amazon ECS service name
+  ECS_CLUSTER: jays-hanghae-prod-cluster                 # set this to your Amazon ECS cluster name
+  ECS_TASK_DEFINITION: jays-hanghae-prod-task # set this to the path to your Amazon ECS task definition
                                                # file, e.g. .aws/task-definition.json
-  CONTAINER_NAME: jays-hanghae-container           # set this to the name of the container in the
+  CONTAINER_NAME: jays-hanghae-prod-container           # set this to the name of the container in the
                                                # containerDefinitions section of your task definition
 
 permissions:
@@ -49,65 +49,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
-
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
-
-    - name: Set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-          java-version: '17'
-          distribution: 'temurin'
-
-    - name: Cache gradle modules
-      uses: actions/cache@v3
-      with:
-          path: |
-              ~/.gradle/caches
-              ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-              ${{ runner.os }}-gradle-
-
-    - name: Build with Gradle
-      run: |
-          chmod +x ./gradlew
-          ./gradlew build -x test
-#  --parallel
-    - name: Set up docker buildx
-      id: buildx
-      uses: docker/setup-buildx-action@v2
-
-    - name: Cache docker layers
-      uses: actions/cache@v2
-      with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-              ${{ runner.os }}-buildx-
-
-    - name: Build, tag, and push image to Amazon ECR
-      id: build-image
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: ${{ github.sha }}
-      run: |
-        # Build a docker container and
-        # push it to ECR so that it can
-        # be deployed to ECS.
-        docker build  --build-arg JAR_FILE=build/libs/*.jar  -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
     - name: Download Task Definition Template
       run: |

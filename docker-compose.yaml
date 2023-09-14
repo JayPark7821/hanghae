@@ -10,11 +10,6 @@ services:
     env_file: .env
     ports:
       - "3306:3306"
-    environment:
-      - TZ=Asia/Seoul
-      - MYSQL_ROOT_PASSWORD=rootpassword
-      - MYSQL_USER=mysqluser
-      - MYSQL_PASSWORD=mysqlpw
 
   jay-hanghae-service:
     image: jays-hanghae:1.0.0
