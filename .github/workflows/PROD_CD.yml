@@ -73,7 +73,7 @@ jobs:
     - name: get latest image tag
       id: get_image_tag
       run: |
-          echo "latest_tag=$(aws ecr describe-images --repository-name ${{ env.ECR_REPOSITORY }} --query 'sort_by(imageDetails,& imagePushedAt)[-1].imageTags[0]'" >> $GITHUB_OUTPUT
+          echo "latest_tag=$(aws ecr describe-images --repository-name ${{ env.ECR_REPOSITORY }} --query 'sort_by(imageDetails,& imagePushedAt)[-1].imageTags[0]')" >> $GITHUB_OUTPUT
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
