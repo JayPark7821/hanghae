@@ -11,51 +11,62 @@ plugins {
     kotlin("plugin.spring") version "1.8.22"
 }
 
-group = "kr.jay"
-version = "1.0.0"
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-}
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("io.rest-assured:rest-assured")
-    implementation("com.h2database:h2:1.4.200")
-    runtimeOnly("com.mysql:mysql-connector-j")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs += "-Xjsr305=strict"
-        jvmTarget = "17"
+allprojects{
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
     }
+
+
+    group = "kr.jay"
+    version = "1.0.0"
+}
+subprojects{
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+//        implementation("org.springframework.boot:spring-boot-starter-web")
+        implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+        implementation("org.jetbrains.kotlin:kotlin-reflect")
+//        testImplementation("org.springframework.boot:spring-boot-starter-test")
+//        testImplementation("io.rest-assured:rest-assured")
+//        implementation("com.h2database:h2:1.4.200")
+//        runtimeOnly("com.mysql:mysql-connector-j")
+//        implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+//        implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    }
+
+
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs += "-Xjsr305=strict"
+            jvmTarget = "17"
+        }
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
+
+    tasks.named<Jar>("jar") {
+        enabled = false
+    }
+
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
 
-tasks.named<Jar>("jar") {
-    enabled = false
-}
 
-docker {
-    name = project.name + ":" + version
-    setDockerfile(file("Dockerfile"))
-    files(tasks.bootJar.get().outputs.files)
-    buildArgs(
-        mapOf(
-            "JAR_FILE" to tasks.bootJar.get().outputs.files.singleFile.name
-        )
-    )
-}
+
+
+
+//docker {
+//    name = project.name + ":" + version
+//    setDockerfile(file("Dockerfile"))
+//    files(tasks.bootJar.get().outputs.files)
+//    buildArgs(
+//        mapOf(
+//            "JAR_FILE" to tasks.bootJar.get().outputs.files.singleFile.name
+//        )
+//    )
+//}
