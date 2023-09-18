@@ -20,3 +20,27 @@
 #### - **TO-BE**
 ![img.png](resource/img.png)
 
+### 성능 개선
+#### Gradle caching
+```yaml
+- name: Cache gradle modules
+      uses: actions/cache@v3
+      with:
+          path: |
+              ~/.gradle/caches
+              ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+              ${{ runner.os }}-gradle-
+```
+
+#### Docker layer caching
+```yaml
+    - name: Cache docker layers
+      uses: actions/cache@v2
+      with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+              ${{ runner.os }}-buildx-
+```
